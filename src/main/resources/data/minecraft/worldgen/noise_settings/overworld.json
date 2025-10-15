@@ -85,7 +85,7 @@
                             "when_out_of_range": {
                               "type": "minecraft:range_choice",
                               "input": {
-                                "type": "classicmodernfarlands:radius_check",
+                                "type": "classicfarlands:radius_check",
                                 "radius": 12550821
                               },
                               "min_inclusive": 1,

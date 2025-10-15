@@ -1,4 +1,4 @@
-package archives.tater.classicmodernfarlands.mixin;
+package archives.tater.classicfarlands.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;

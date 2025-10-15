@@ -1,4 +1,4 @@
-package archives.tater.classicmodernfarlands;
+package archives.tater.classicfarlands;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
