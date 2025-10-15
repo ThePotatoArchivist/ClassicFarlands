@@ -3,13 +3,13 @@
 	"id": "classicfarlands",
 	"version": "${version}",
 	"name": "Classic Farlands",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Brings the classic style of farlands to 1.21+",
 	"authors": [
-		"Me!"
+		"ThePotatoArchivist"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/classic-farlands",
+		"sources": "https://github.com/ThePotatoArchivist/ClassicFarlands"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/classicfarlands/icon.png",
