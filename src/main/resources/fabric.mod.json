@@ -11,7 +11,7 @@
 		"homepage": "https://modrinth.com/mod/classic-farlands",
 		"sources": "https://github.com/ThePotatoArchivist/ClassicFarlands"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/classicfarlands/icon.png",
 	"environment": "*",
 	"entrypoints": {
