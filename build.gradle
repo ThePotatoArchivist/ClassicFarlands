@@ -29,7 +29,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation ("com.github.ramixin:mixson-fabric:${project.mixson_version}") {
+    modImplementation include("com.github.ramixin:mixson-fabric:${project.mixson_version}") {
         exclude(group: "net.fabricmc")
     }
 }
