@@ -1,11 +1,15 @@
 package archives.tater.classicfarlands;
 
 import net.fabricmc.api.ModInitializer;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+
 import com.google.gson.JsonObject;
-import net.ramixin.mixson.inline.Mixson;
+import net.ramixin.mixson.Mixson;
+import net.ramixin.mixson.enums.ErrorPolicy;
+import net.ramixin.mixson.enums.Lifetime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +42,11 @@ public class ClassicFarlands implements ModInitializer {
 
         Mixson.registerEvent(
                 0,
-                OVERWORLD_NOISE::equals,
+                Lifetime.PERSISTENT,
+                ErrorPolicy.THROW,
                 "Modify Overworld Noise",
-                (context) -> {
+                index -> index.id().equals(OVERWORLD_NOISE),
+                context -> {
                     var noiseRouter = context.getFile().getAsJsonObject().getAsJsonObject("noise_router");
                     var oldFinalDensity = noiseRouter.get("final_density");
 
@@ -60,8 +66,7 @@ public class ClassicFarlands implements ModInitializer {
                     newFinalDensity.add("when_out_of_range", oldFinalDensity);
 
                     noiseRouter.add("final_density", newFinalDensity);
-                },
-                false
+                }
         );
 	}
 }
