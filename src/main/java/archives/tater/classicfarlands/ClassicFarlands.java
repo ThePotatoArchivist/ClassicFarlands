@@ -1,6 +1,7 @@
 package archives.tater.classicfarlands;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,14 +22,31 @@ public class ClassicFarlands implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    public static final ClassicFarlandsConfig CONFIG = ClassicFarlandsConfig.createToml(
+            FabricLoader.getInstance().getConfigDir(),
+            "",
+            MOD_ID,
+            ClassicFarlandsConfig.class
+    );
+
+    public static final int BASE_DISTANCE = 12550821;
+
     public static final Identifier OVERWORLD_NOISE = Identifier.withDefaultNamespace("worldgen/noise_settings/overworld");
+
+    public static int adjustCoordinate(int coordinate) {
+        if (coordinate > CONFIG.distance)
+            return coordinate + BASE_DISTANCE - CONFIG.distance;
+        if (coordinate < -CONFIG.distance)
+            return coordinate - BASE_DISTANCE + CONFIG.distance;
+        return coordinate;
+    }
 
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-        Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "radius_check"), RadiusCheck.AXIS_VALUE_CODEC);
+        Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "radius_check"), RadiusCheck.CODEC);
 
 //        "type": "minecraft:range_choice",
 //                "input": {
@@ -56,7 +74,6 @@ public class ClassicFarlands implements ModInitializer {
 
                     var choiceInput = new JsonObject();
                     choiceInput.addProperty("type", "classicfarlands:radius_check");
-                    choiceInput.addProperty("radius", 12550821); // 12550821
                     newFinalDensity.add("input", choiceInput);
 
                     newFinalDensity.addProperty("min_inclusive", 1);
