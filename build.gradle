@@ -18,6 +18,7 @@ repositories {
 	// for more information about repositories.
     mavenCentral()
     maven { url 'https://jitpack.io' }
+	maven { url 'https://repo.sleeping.town/' }
 }
 
 dependencies {
@@ -29,6 +30,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
     modImplementation include("com.github.ramixin:mixson-fabric:${project.mixson_version}") {
         exclude(group: "net.fabricmc")
     }
