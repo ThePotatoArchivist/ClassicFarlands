@@ -14,6 +14,8 @@ import net.ramixin.mixson.enums.Lifetime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 public class ClassicFarlands implements ModInitializer {
 	public static final String MOD_ID = "classicfarlands";
 
@@ -31,7 +33,13 @@ public class ClassicFarlands implements ModInitializer {
 
     public static final int BASE_DISTANCE = 12550821;
 
-    public static final Identifier OVERWORLD_NOISE = Identifier.withDefaultNamespace("worldgen/noise_settings/overworld");
+    public static int COORDINATE_DISTANCE = 0;
+
+    public static final Set<Identifier> OVERWORLD_NOISES = Set.of(
+            Identifier.withDefaultNamespace("worldgen/noise_settings/overworld"),
+            Identifier.withDefaultNamespace("worldgen/noise_settings/amplified"),
+            Identifier.withDefaultNamespace("worldgen/noise_settings/large_biomes")
+    );
 
     public static int adjustCoordinate(int coordinate) {
         if (coordinate > CONFIG.distance)
@@ -63,7 +71,7 @@ public class ClassicFarlands implements ModInitializer {
                 Lifetime.PERSISTENT,
                 ErrorPolicy.THROW,
                 "Modify Overworld Noise",
-                index -> index.id().equals(OVERWORLD_NOISE),
+                index -> OVERWORLD_NOISES.contains(index.id()),
                 context -> {
                     var noiseRouter = context.getFile().getAsJsonObject().getAsJsonObject("noise_router");
                     var oldFinalDensity = noiseRouter.get("final_density");
