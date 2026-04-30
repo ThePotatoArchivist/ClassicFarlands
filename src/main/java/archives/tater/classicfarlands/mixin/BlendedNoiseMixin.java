@@ -17,7 +17,7 @@ public class BlendedNoiseMixin {
                     @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;blockZ()I")
             }
     )
-    private int modifyX(int original) {
+    private int modifyCoordinate(int original) {
         return ClassicFarlands.adjustCoordinate(original);
     }
 }
