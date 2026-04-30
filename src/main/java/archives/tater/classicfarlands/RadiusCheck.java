@@ -15,7 +15,7 @@ public class RadiusCheck implements DensityFunction.Base {
 
     @Override
     public double sample(DensityFunction.NoisePos pos) {
-        return max(Math.abs(pos.blockX()), Math.abs(pos.blockZ())) >= ClassicFarlands.CONFIG.distance ? 1.0 : 0.0;
+        return max(Math.abs(pos.blockX()), Math.abs(pos.blockZ())) >= ClassicFarlands.SWITCH_DISTANCE ? 1.0 : 0.0;
     }
 
     @Override

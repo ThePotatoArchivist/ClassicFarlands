@@ -1,6 +1,7 @@
 package archives.tater.classicfarlands;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.registry.Registries;
@@ -29,7 +30,10 @@ public class ClassicFarlands implements ModInitializer {
             ClassicFarlandsConfig.class
     );
 
-    public static final int BASE_DISTANCE = 12550821;
+    public static final int BASE_DISTANCE = 12550824;
+
+    public static int COORDINATE_DISTANCE = 0;
+    public static int SWITCH_DISTANCE = 0;
 
     public static final Set<Identifier> OVERWORLD_NOISES = Set.of(
             Identifier.ofVanilla("worldgen/noise_settings/overworld"),
@@ -38,10 +42,10 @@ public class ClassicFarlands implements ModInitializer {
     );
 
     public static int adjustCoordinate(int coordinate) {
-        if (coordinate > CONFIG.distance)
-            return coordinate + BASE_DISTANCE - CONFIG.distance;
-        if (coordinate < -CONFIG.distance)
-            return coordinate - BASE_DISTANCE + CONFIG.distance;
+        if (coordinate > COORDINATE_DISTANCE)
+            return coordinate + BASE_DISTANCE - COORDINATE_DISTANCE;
+        if (coordinate < -COORDINATE_DISTANCE)
+            return coordinate - BASE_DISTANCE + COORDINATE_DISTANCE;
         return coordinate;
     }
 
@@ -61,6 +65,11 @@ public class ClassicFarlands implements ModInitializer {
 //                "max_exclusive": 2,
 //                "when_in_range": "minecraft:overworld/base_3d_noise",
 //                "when_out_of_range": {
+
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4);
+            SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) - 3;
+        });
 
         Mixson.registerEvent(
                 0,
