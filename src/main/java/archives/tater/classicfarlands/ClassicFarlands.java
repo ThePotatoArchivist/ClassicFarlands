@@ -12,6 +12,8 @@ import net.ramixin.mixson.inline.Mixson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 public class ClassicFarlands implements ModInitializer {
 	public static final String MOD_ID = "classicfarlands";
 
@@ -29,7 +31,11 @@ public class ClassicFarlands implements ModInitializer {
 
     public static final int BASE_DISTANCE = 12550821;
 
-    public static final Identifier OVERWORLD_NOISE = Identifier.ofVanilla("worldgen/noise_settings/overworld");
+    public static final Set<Identifier> OVERWORLD_NOISES = Set.of(
+            Identifier.ofVanilla("worldgen/noise_settings/overworld"),
+            Identifier.ofVanilla("worldgen/noise_settings/amplified"),
+            Identifier.ofVanilla("worldgen/noise_settings/large_biomes")
+    );
 
     public static int adjustCoordinate(int coordinate) {
         if (coordinate > CONFIG.distance)
@@ -58,7 +64,7 @@ public class ClassicFarlands implements ModInitializer {
 
         Mixson.registerEvent(
                 0,
-                OVERWORLD_NOISE::equals,
+                OVERWORLD_NOISES::contains,
                 "Modify Overworld Noise",
                 (context) -> {
                     var noiseRouter = context.getFile().getAsJsonObject().getAsJsonObject("noise_router");
