@@ -68,7 +68,10 @@ public class ClassicFarlands implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4);
-            SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) - 3;
+            if (CONFIG.distance == 12550824)
+                SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) - 3;
+            else
+                SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) + 1;
         });
 
         Mixson.registerEvent(
