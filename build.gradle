@@ -17,7 +17,17 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
     mavenCentral()
-    maven { url 'https://jitpack.io' }
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 	maven { url 'https://repo.sleeping.town/' }
 }
 
@@ -31,9 +41,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
-    modImplementation include("com.github.ramixin:mixson-fabric:${project.mixson_version}") {
-        exclude(group: "net.fabricmc")
-    }
+    modImplementation include("maven.modrinth:mixson:${project.mixson_version}")
 }
 
 processResources {
