@@ -69,7 +69,7 @@ public class ClassicFarlands implements ModInitializer {
 //                "when_out_of_range": {
 
         ServerLifecycleEvents.SERVER_STARTING.register(_ -> {
-            COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4);
+            COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4) - 2;
             SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) - 3;
         });
 
