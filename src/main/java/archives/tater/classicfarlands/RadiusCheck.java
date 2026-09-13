@@ -1,35 +1,49 @@
 package archives.tater.classicfarlands;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.util.KeyDispatchDataCodec;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.util.Interval;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 
 import static java.lang.Math.max;
 
-public class RadiusCheck implements DensityFunction.SimpleFunction {
-    public static final RadiusCheck INSTANCE = new RadiusCheck();
-    public static final MapCodec<RadiusCheck> CODEC = MapCodec.unit(INSTANCE);
-    public static final KeyDispatchDataCodec<RadiusCheck> CODEC_HOLDER = KeyDispatchDataCodec.of(CODEC);
-
-    private RadiusCheck() {}
+public record RadiusCheck(int maxDistance) implements DensityFunction {
+    public static final MapCodec<RadiusCheck> CODEC = null;
 
     @Override
-    public double compute(DensityFunction.FunctionContext pos) {
-        return max(Math.abs(pos.blockX()), Math.abs(pos.blockZ())) >= ClassicFarlands.SWITCH_DISTANCE ? 1.0 : 0.0;
+    public DensitySampler compileSampler(CompileContext context) {
+        return new Sampler(maxDistance);
     }
 
     @Override
-    public double minValue() {
-        return 0.0;
+    public DensityFunction rewriteChildren(DfRewriteRule rule) {
+        return this;
     }
 
     @Override
-    public double maxValue() {
-        return 1.0;
+    public Interval range() {
+        return Interval.of(0f, 1f);
     }
 
     @Override
-    public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC_HOLDER;
+    public @Axes int domainAxes() {
+        return 0;
+    }
+
+    @Override
+    public MapCodec<? extends DensityFunction> codec() {
+        return CODEC;
+    }
+
+    private record Sampler(int maxDistance) implements DensitySampler {
+
+        @Override
+        public void sampleVolume(SamplerContext context, DensityBuffer outputBuffer, DensityVolume volume) {
+
+        }
+
+        @Override
+        public float sampleValue(SamplerContext context, int blockX, int blockY, int blockZ) {
+            return max(Math.abs(blockX), Math.abs(blockZ)) >= ClassicFarlands.SWITCH_DISTANCE ? 1f : 0f;
+        }
     }
 }

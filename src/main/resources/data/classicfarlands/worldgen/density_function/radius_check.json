@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:distance_to_point",
+  "point": [0, 0, 0],
+  "metric": "chebyshev"
+}

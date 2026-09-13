@@ -19,8 +19,9 @@ import java.util.Set;
 
 public class ClassicFarlands implements ModInitializer {
 	public static final String MOD_ID = "classicfarlands";
+    public static final Identifier UNBOUNDED_RANGE_CHOICE = Identifier.fromNamespaceAndPath(MOD_ID, "radius_check");
 
-	// This logger is used to write text to the console and the log file.
+    // This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -38,12 +39,12 @@ public class ClassicFarlands implements ModInitializer {
     public static int SWITCH_DISTANCE = 0;
 
     public static final Set<Identifier> OVERWORLD_NOISES = Set.of(
-            Identifier.withDefaultNamespace("worldgen/noise_settings/overworld"),
-            Identifier.withDefaultNamespace("worldgen/noise_settings/amplified"),
-            Identifier.withDefaultNamespace("worldgen/noise_settings/large_biomes")
+            Identifier.withDefaultNamespace("worldgen/density_function/overworld/final_density"),
+            Identifier.withDefaultNamespace("worldgen/density_function/overworld_amplified/final_density"),
+            Identifier.withDefaultNamespace("worldgen/density_function/overworld_large_biomes/final_density")
     );
 
-    public static int adjustCoordinate(int coordinate) {
+    public static double adjustCoordinate(double coordinate) {
         if (coordinate > COORDINATE_DISTANCE)
             return coordinate + BASE_DISTANCE - COORDINATE_DISTANCE;
         if (coordinate < -COORDINATE_DISTANCE)
@@ -56,17 +57,7 @@ public class ClassicFarlands implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-        Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "radius_check"), RadiusCheck.CODEC);
-
-//        "type": "minecraft:range_choice",
-//                "input": {
-//            "type": "classicfarlands:radius_check",
-//                    "radius": 12550821
-//        },
-//        "min_inclusive": 1,
-//                "max_exclusive": 2,
-//                "when_in_range": "minecraft:overworld/base_3d_noise",
-//                "when_out_of_range": {
+        Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, UNBOUNDED_RANGE_CHOICE, UnboundedRangeChoiceFunction.CODEC);
 
         ServerLifecycleEvents.SERVER_STARTING.register(_ -> {
             COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4) - 2;
@@ -80,24 +71,20 @@ public class ClassicFarlands implements ModInitializer {
                 "Modify Overworld Noise",
                 index -> OVERWORLD_NOISES.contains(index.id()),
                 context -> {
-                    var noiseRouter = context.getFile().getAsJsonObject().getAsJsonObject("noise_router");
-                    var oldFinalDensity = noiseRouter.get("final_density");
+                    var oldFinalDensity = context.getFile().getAsJsonObject();
 
-                    var newFinalDensity = new JsonObject();
+                    var newFinalDensity = new JsonObject(); {
+                        newFinalDensity.addProperty("type", UNBOUNDED_RANGE_CHOICE.toString());
 
-                    newFinalDensity.addProperty("type", "minecraft:range_choice");
+                        newFinalDensity.addProperty("input", "classicfarlands:radius_check");
+                        newFinalDensity.addProperty("min_inclusive", 0);
+                        newFinalDensity.addProperty("max_exclusive", SWITCH_DISTANCE);
 
-                    var choiceInput = new JsonObject();
-                    choiceInput.addProperty("type", "classicfarlands:radius_check");
-                    newFinalDensity.add("input", choiceInput);
+                        newFinalDensity.add("when_in_range", oldFinalDensity);
+                        newFinalDensity.addProperty("when_out_of_range", "classicfarlands:farlands_final_density");
+                    }
 
-                    newFinalDensity.addProperty("min_inclusive", 1);
-                    newFinalDensity.addProperty("max_exclusive", 2);
-
-                    newFinalDensity.addProperty("when_in_range", "classicfarlands:old_overworld_noise");
-                    newFinalDensity.add("when_out_of_range", oldFinalDensity);
-
-                    noiseRouter.add("final_density", newFinalDensity);
+                    context.setFile(newFinalDensity);
                 }
         );
 	}
