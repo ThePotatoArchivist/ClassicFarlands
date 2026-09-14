@@ -33,7 +33,6 @@ public class ClassicFarlands implements ModInitializer {
     public static final int BASE_DISTANCE = 12550824;
 
     public static int COORDINATE_DISTANCE = 0;
-    public static int SWITCH_DISTANCE = 0;
 
     public static final Set<Identifier> OVERWORLD_NOISES = Set.of(
             Identifier.withDefaultNamespace("worldgen/density_function/overworld/final_density"),
@@ -56,7 +55,6 @@ public class ClassicFarlands implements ModInitializer {
 		// Proceed with mild caution.
         ServerLifecycleEvents.SERVER_STARTING.register(_ -> {
             COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4) - 2;
-            SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) - 3;
         });
 
         Mixson.registerEvent(
