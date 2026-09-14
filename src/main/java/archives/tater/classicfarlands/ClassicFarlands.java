@@ -4,11 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 
-import com.google.gson.JsonObject;
 import net.ramixin.mixson.Mixson;
 import net.ramixin.mixson.enums.ErrorPolicy;
 import net.ramixin.mixson.enums.Lifetime;
@@ -57,8 +54,6 @@ public class ClassicFarlands implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-        Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, UNBOUNDED_RANGE_CHOICE, UnboundedRangeChoiceFunction.CODEC);
-
         ServerLifecycleEvents.SERVER_STARTING.register(_ -> {
             COORDINATE_DISTANCE = 4 * (CONFIG.distance / 4) - 2;
             SWITCH_DISTANCE = 4 * (CONFIG.distance / 4) - 3;
@@ -71,20 +66,7 @@ public class ClassicFarlands implements ModInitializer {
                 "Modify Overworld Noise",
                 index -> OVERWORLD_NOISES.contains(index.id()),
                 context -> {
-                    var oldFinalDensity = context.getFile().getAsJsonObject();
-
-                    var newFinalDensity = new JsonObject(); {
-                        newFinalDensity.addProperty("type", UNBOUNDED_RANGE_CHOICE.toString());
-
-                        newFinalDensity.addProperty("input", "classicfarlands:radius_check");
-                        newFinalDensity.addProperty("min_inclusive", 0);
-                        newFinalDensity.addProperty("max_exclusive", SWITCH_DISTANCE);
-
-                        newFinalDensity.add("when_in_range", oldFinalDensity);
-                        newFinalDensity.addProperty("when_out_of_range", "classicfarlands:farlands_final_density");
-                    }
-
-                    context.setFile(newFinalDensity);
+                    context.setFile(DensityJsonUtil.modifyFinalDensity(context.getFile(), 4 * (CONFIG.distance / 4) - 3));
                 }
         );
 	}
