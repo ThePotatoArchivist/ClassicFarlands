@@ -16,7 +16,6 @@ import java.util.Set;
 
 public class ClassicFarlands implements ModInitializer {
 	public static final String MOD_ID = "classicfarlands";
-    public static final Identifier UNBOUNDED_RANGE_CHOICE = Identifier.fromNamespaceAndPath(MOD_ID, "radius_check");
 
     // This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
