@@ -17,9 +17,9 @@ import net.minecraft.world.level.levelgen.synth.SmearedPerlinNoise;
 public class SmearedPerlinNoiseMixin {
     @Definition(id = "wrap", method = "Lnet/minecraft/world/level/levelgen/synth/SmearedPerlinNoise;wrap(D)D")
     @Definition(id = "_x", local = @Local(type = double.class, name = "_x", argsOnly = true))
-    @Definition(id = "_y", local = @Local(type = double.class, name = "_y", argsOnly = true))
+    @Definition(id = "_z", local = @Local(type = double.class, name = "_z", argsOnly = true))
     @Expression("wrap(_x)")
-    @Expression("wrap(_y)")
+    @Expression("wrap(_z)")
     @WrapOperation(
             method = "get",
             at = @At("MIXINEXTRAS:EXPRESSION")
