@@ -1,7 +1,5 @@
 package archives.tater.classicfarlands;
 
-import net.minecraft.world.level.levelgen.densityfunction.DensityFunctions;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -21,11 +19,11 @@ public interface DensityJsonUtil {
                 )
         ));
 
-        newFinalDensity.addProperty("min_inclusive", -DensityFunctions.MAX_REASONABLE_NOISE_VALUE);
-        newFinalDensity.addProperty("max_exclusive", 1f);
+        newFinalDensity.addProperty("min_inclusive", 1f);
+        newFinalDensity.addProperty("max_exclusive", 2f);
 
-        newFinalDensity.add("when_in_range", finalDensity);
-        newFinalDensity.addProperty("when_out_of_range", "classicfarlands:farlands_final_density");
+        newFinalDensity.addProperty("when_in_range", "classicfarlands:farlands_final_density");
+        newFinalDensity.add("when_out_of_range", finalDensity);
 
         return newFinalDensity;
     }
@@ -46,7 +44,7 @@ public interface DensityJsonUtil {
         obj.addProperty("from_coordinate", 0);
         obj.addProperty("to_coordinate", toCoordinate);
         obj.addProperty("from_value", 0);
-        obj.addProperty("to_value", 0);
+        obj.addProperty("to_value", 1);
         return obj;
     }
 }

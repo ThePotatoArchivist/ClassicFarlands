@@ -3,8 +3,7 @@
 	"package": "archives.tater.classicfarlands.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"SmearedPerlinNoiseMixin",
-		"SharedConstantsMixin"
+		"SmearedPerlinNoiseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
