@@ -48,7 +48,49 @@
                       "right": 5.0
                     }
                   },
-                  "when_out_of_range": "classicfarlands:focus"
+                  "when_out_of_range": {
+                    "type": "minecraft:add",
+                    "left": {
+                      "type": "minecraft:mul",
+                      "left": {
+                        "type": "minecraft:square",
+                        "input": {
+                          "type": "minecraft:noise",
+                          "noise": "minecraft:cave_layer",
+                          "xz_scale": 1.0,
+                          "y_scale": 8.0
+                        }
+                      },
+                      "right": 4.0
+                    },
+                    "right": {
+                      "type": "minecraft:add",
+                      "left": {
+                        "type": "minecraft:clamp",
+                        "input": {
+                          "type": "minecraft:add",
+                          "left": {
+                            "type": "minecraft:noise",
+                            "noise": "minecraft:cave_cheese",
+                            "xz_scale": 1.0,
+                            "y_scale": 0.6666666666666666
+                          },
+                          "right": 0.27
+                        },
+                        "max": 1.0,
+                        "min": -1.0
+                      },
+                      "right": {
+                        "type": "minecraft:add",
+                        "left": {
+                          "type": "minecraft:mul",
+                          "left": "minecraft:overworld/sloped_cheese",
+                          "right": -0.64
+                        },
+                        "right": 1.5
+                      }
+                    }
+                  }
                 }
               }
             }
