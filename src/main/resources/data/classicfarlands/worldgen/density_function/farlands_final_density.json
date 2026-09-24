@@ -48,7 +48,7 @@
                       "right": 5.0
                     }
                   },
-                  "when_out_of_range": "minecraft:overworld/base_3d_noise"
+                  "when_out_of_range": "classicfarlands:focus"
                 }
               }
             }
