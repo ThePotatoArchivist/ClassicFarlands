@@ -4,6 +4,7 @@ import archives.tater.classicfarlands.ClassicFarlands;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -29,15 +30,24 @@ public class SmearedPerlinNoiseMixin {
     }
 
     @Definition(id = "wrap", method = "Lnet/minecraft/world/level/levelgen/synth/SmearedPerlinNoise;wrap(D)D")
-    @Definition(id = "offsetX", field = "Lnet/minecraft/world/level/levelgen/synth/SmearedPerlinNoise;offsetX:D")
-    @Definition(id = "offsetZ", field = "Lnet/minecraft/world/level/levelgen/synth/SmearedPerlinNoise;offsetZ:D")
-    @Expression("@(wrap(?)) + ?.offsetX")
-    @Expression("@(wrap(?)) + ?.offsetZ")
+    @Definition(id = "xzScale", local = @Local(type = double.class, name = "xzScale", argsOnly = true))
+    @Expression("wrap(@(?) * xzScale)")
+    @ModifyExpressionValue(
+            method = "addToVolume",
+            at = @At("MIXINEXTRAS:EXPRESSION")
+    )
+    private double modifyCoordinate2(double original) {
+        return ClassicFarlands.adjustCoordinate(original);
+    }
+
+    @Definition(id = "wrap", method = "Lnet/minecraft/world/level/levelgen/synth/SmearedPerlinNoise;wrap(D)D")
+    @Definition(id = "xzScale", local = @Local(type = double.class, name = "xzScale", argsOnly = true))
+    @Expression("wrap(? * xzScale)")
     @WrapOperation(
             method = "addToVolume",
             at = @At("MIXINEXTRAS:EXPRESSION")
     )
-    private double modifyCoordinate2(double v, Operation<Double> original) {
-        return ClassicFarlands.adjustCoordinate(v);
+    private double noWrap(double v, Operation<Double> original) {
+        return v;
     }
 }
