@@ -6,4 +6,7 @@ import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
 public class ClassicFarlandsConfig extends WrappedConfig {
     @Comment("The distance from world origin the Far Lands begin at, precise to within 4 blocks")
     public int distance = ClassicFarlands.BASE_DISTANCE;
+
+    @Comment("If aquifers should be disabled in the Far Lands")
+    public boolean disableAquifers = false;
 }
