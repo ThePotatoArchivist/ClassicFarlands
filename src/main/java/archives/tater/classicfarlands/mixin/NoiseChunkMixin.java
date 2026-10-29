@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 
+import static java.lang.Math.abs;
+
 @Mixin(NoiseBasedChunkGenerator.class)
 public class NoiseChunkMixin {
     @ModifyReturnValue(
@@ -19,7 +21,7 @@ public class NoiseChunkMixin {
     private static Aquifer.FluidPicker disableAquifers(Aquifer.FluidPicker original, @Local(name = "emptyStatus") Aquifer.FluidStatus emptyStatus) {
         return ClassicFarlands.CONFIG.disableAquifers
                 ? (blockX, blockY, blockZ) ->
-                        blockX > ClassicFarlands.COORDINATE_DISTANCE || blockZ > ClassicFarlands.COORDINATE_DISTANCE
+                        abs(blockX) > ClassicFarlands.COORDINATE_DISTANCE || abs(blockZ) > ClassicFarlands.COORDINATE_DISTANCE
                                 ? emptyStatus
                                 : original.computeFluid(blockX, blockY, blockZ)
                 : original;
